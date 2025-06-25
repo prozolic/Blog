@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="Blog.Generator/Blog.Generator.csproj" Id="c15283f7-da9d-4e89-a8c9-eb54cee4dff7" />
   <Project Path="Blog/Blog.csproj" />
 </Solution>
