@@ -17,6 +17,10 @@
     <PackageReference Include="PublishSPAforGitHubPages.Build" Version="3.0.0" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <GHPages>true</GHPages>
+  </PropertyGroup>
+
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
   </ItemGroup>
