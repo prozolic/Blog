@@ -1,15 +1,28 @@
 ﻿using Blog;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using CsToml.Extensions.Configuration;
+using System.Text;
+using CsToml;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+var httpClient = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
 
-var p = PostProvider.AllPost;
-var p2 = PostProvider._2025;
-var p3 = PostProvider._2026;
+try
+{
+    var toml = await httpClient.GetByteArrayAsync("appSettings.toml");
+    var ms = new MemoryStream(toml);
+    builder.Configuration.AddTomlStream(ms);
+}
+catch(Exception e)
+{
+    Console.WriteLine($"Failed to load appSettings.toml: {e}");   
+}
+
+builder.Services.AddScoped(sp => httpClient);
 
 await builder.Build().RunAsync();
+

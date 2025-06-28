@@ -9,11 +9,16 @@
 		foreach(var post in posts)
 		{
 			<article class="post">
-				<h2 class="post-title">
-					<a href="@post.Date">@post.Title</a>
-				</h2>
-				<div class="post-meta">
-					<time>@post.Date</time>
+				<header>
+					<h2 class="post-title">
+						<a href="@post.Url">@post.Title</a>
+					</h2>
+					<div class="post-meta">
+						<time>@post.Date</time>
+					</div>
+				</header>
+				<div class="post-excerpt">
+					@post.HeadText
 				</div>
 			</article>
 		}

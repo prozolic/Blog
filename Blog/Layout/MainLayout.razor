@@ -11,13 +11,43 @@
 
     <main class="main">
         <div class="container">
-            @Body
+            <div class="content-wrapper">
+                <div class="main-content">
+                    @Body
+                </div>
+                <aside class="sidebar">
+                    <div class="profile-section">
+                        <h3>Profile</h3>
+                        <div class="profile-content">
+                            <div class="profile-info">
+								<h4>@Name</h4>
+								<p>@Description</p>
+								<p>GitHub: <a href=@GithubUrl>@GithubUrl</a></p>
+								<p>このブログのソースコード: <a href=@BlogSourceUrl>@BlogSourceUrl</a></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="recent-posts-section">
+                        <h3>最新記事</h3>
+                        <div class="recent-posts">
+							@foreach (var post in GetLatestPosts(3))
+                            {
+                                <div class="recent-post-item">
+                                    <a href="@post.Url" class="recent-post-title">@post.Title</a>
+                                    <div class="recent-post-date">@post.Date</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </aside>
+            </div>
         </div>
     </main>
 
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2024 Tech Blog. All rights reserved.</p>
+            <p>&copy; 2025 prozolic. All rights reserved.</p>
         </div>
     </footer>
 </div>

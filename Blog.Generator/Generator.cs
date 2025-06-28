@@ -1,6 +1,7 @@
 ﻿using Markdig;
 using Markdig.Extensions.Yaml;
 using Markdig.Syntax;
+using Markdig.Syntax.Inlines;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using System;
@@ -20,27 +21,30 @@ public partial class Generator : IIncrementalGenerator
     {
         var mdFilesSource = context.AdditionalTextsProvider
             .Where(t => t.Path.EndsWith(".md"))
-            .Select((t, token) => new MarkdownFile(t.Path, t.GetText(token)))
+            .Select((t, token) => new Post(t.Path, t.GetText(token)))
             .Collect();
 
         context.RegisterSourceOutput(mdFilesSource, Emit);
     }
 
-    private void Emit(SourceProductionContext context, ImmutableArray<MarkdownFile> source)
+    private void Emit(SourceProductionContext context, ImmutableArray<Post> source)
     {
-        var posts = new Dictionary<string, List<MarkdownFile>>();
+        var posts = new Dictionary<string, List<Post>>();
         foreach(var mdFile in source.Where(m => !m.FileName.Equals("Profile")))
         {
-            var key = mdFile.FileName.AsSpan().Slice(0, 4).ToString();
-            if (posts.TryGetValue(key, out var result))
+            if (mdFile.FileName.Length == 8 && int.TryParse(mdFile.FileName, out var _))
             {
-                result.Add(mdFile);
-            }
-            else
-            {
-                var mdFiles = new List<MarkdownFile>();
-                mdFiles.Add(mdFile);
-                posts[key] = mdFiles;
+                var key = mdFile.FileName.AsSpan().Slice(0, 4).ToString();
+                if (posts.TryGetValue(key, out var result))
+                {
+                    result.Add(mdFile);
+                }
+                else
+                {
+                    var mdFiles = new List<Post>();
+                    mdFiles.Add(mdFile);
+                    posts[key] = mdFiles;
+                }
             }
         }
 
@@ -58,16 +62,16 @@ public partial class Generator : IIncrementalGenerator
         {
             var postList = new StringBuilder();
             postList.AppendLine($"    public static readonly ImmutableArray<Post> _{p.Key} = [");
-            foreach (var mdFile in p.Value.OrderByDescending(m => m.FileName))
+            foreach (var post in p.Value.OrderByDescending(m => m.FileName))
             {
-                if (mdFile.SourceText is null)
+                if (post.SourceText is null)
                 {
                     continue;
                 }
 
-                var title = mdFile.Header.title;
-                var date = mdFile.FileName;
-                postList.AppendLine($"        new Post() {{ Title = \"{title}\", Date = \"{date}\", }},");
+                var title = post.Header.Title?.Replace("\"", "\\\"").Replace("\r", "").Replace("\n", " ");
+                var headText = post.HeadText?.Replace("\"", "\\\"").Replace("\r", "").Replace("\n", " ");
+                postList.AppendLine($"        new Post() {{ Url = \"{post.FileName}\", Date = \"{post.DisplayPostDate}\", Title = \"{title}\", HeadText = \"{headText}\" }},");
             }
             postList.AppendLine("    ];");
             postListEmitter.AppendLine(postList.ToString());
@@ -85,6 +89,7 @@ public partial class Generator : IIncrementalGenerator
 #pragma warning disable CS8619 // Possible null reference assignment fix
 
 using System.Collections.Immutable;
+using System.Runtime.InteropServices;
 
 namespace Blog;
 
@@ -95,21 +100,24 @@ public static class PostProvider
 {{allPostEmitter}}
 }
 
+[StructLayout(LayoutKind.Auto)]
 public record struct Post
 {
+    public required string? Url { get; init; }
+
     public required string? Date { get; init; }
 
     public required string? Title { get; init; }
+
+    public required string? HeadText { get; init; }
 }
 """;
 
-        context.AddSource($"MarkdownFiles_generated.g.cs", code);
+        context.AddSource($"PostProvider_generated.g.cs", code);
     }
 }
 
-
-
-public sealed record MarkdownFile
+public sealed record Post
 {
     private static readonly MarkdownPipeline markdownPipeline = new MarkdownPipelineBuilder()
         .UseAdvancedExtensions()
@@ -124,7 +132,21 @@ public sealed record MarkdownFile
 
     public Header Header { get; init; }
 
-    public MarkdownFile(string path, SourceText? sourceText)
+    public string HeadText { get; init; }
+
+    public string DisplayPostDate
+    {
+        get
+        {
+            if (DateTime.TryParseExact(FileName, "yyyyMMdd", null, System.Globalization.DateTimeStyles.None, out var date))
+            {
+                return date.ToString("yyyy-MM-dd");
+            }
+            return FileName;
+        }
+    }
+
+    public Post(string path, SourceText? sourceText)
     {
         Path = path;
         SourceText = sourceText;
@@ -135,16 +157,30 @@ public sealed record MarkdownFile
         var yaml = markdown.Substring(yamlBlock.Span.Start, yamlBlock.Span.Length);
 
         Header = YamlSerializer.Deserialize<Header>(Encoding.UTF8.GetBytes(yaml));
+
+        // Extract the first 60 characters of the text content from the markdown document.
+        var headTextEmiiter = new StringBuilder();
+        foreach (var block in document)
+        {
+            if (block is ParagraphBlock paragraphBlock && paragraphBlock.Inline != null)
+            {
+                foreach(var inline in paragraphBlock.Inline.Where(i => i is LiteralInline))
+                {
+                    headTextEmiiter.Append(inline.ToString());
+                }
+            }
+        }
+        HeadText = headTextEmiiter.Length > 60 ? $"{headTextEmiiter.ToString().Substring(0, 60)}..." : headTextEmiiter.ToString();
     }
 }
 
 [YamlObject]
-public partial class Header
+public partial record Header
 {
-    public string? title { get; set; }
+    public string? Title { get; init; }
 
-    public string? url { get; set; }
+    public string? Url { get; init; }
 
-    //public string? @namespace { get; set; }
+    public string? Namespace { get; init; }
 
 }

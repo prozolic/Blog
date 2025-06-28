@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,8 +7,9 @@
     <title>Blog</title>
     <base href="/" />
     <link rel="stylesheet" href="css/app.css" />
-    <!-- If you add any scoped CSS files, uncomment the following to load them
-    <link href="Blog.styles.css" rel="stylesheet" /> -->
+    <!-- Prism.js CSS for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
+    <link href="Blog.styles.css" rel="stylesheet" /> 
     <link href="manifest.webmanifest" rel="manifest" />
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
     <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
@@ -16,11 +17,12 @@
 
 <body>
     <div id="app">
-        <svg class="loading-progress">
-            <circle r="40%" cx="50%" cy="50%" />
-            <circle r="40%" cx="50%" cy="50%" />
-        </svg>
-        <div class="loading-progress-text"></div>
+        <div class="pulse-dots-loader">
+            <div class="pulse-dot pulse-dot-1"></div>
+            <div class="pulse-dot pulse-dot-2"></div>
+            <div class="pulse-dot pulse-dot-3"></div>
+        </div>
+        <div class="loading-text">Loading...</div>
     </div>
 
     <div id="blazor-error-ui">
@@ -29,6 +31,9 @@
         <span class="dismiss">🗙</span>
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
+    <!-- Prism.js JavaScript for syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>
 </body>
 
