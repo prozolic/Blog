@@ -4,10 +4,7 @@ using Markdig.Syntax;
 using Markdig.Syntax.Inlines;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
-using System;
 using System.Collections.Immutable;
-using System.IO;
-using System.Linq;
 using System.Text;
 using VYaml.Annotations;
 using VYaml.Serialization;
@@ -41,9 +38,7 @@ public partial class Generator : IIncrementalGenerator
                 }
                 else
                 {
-                    var mdFiles = new List<Post>();
-                    mdFiles.Add(mdFile);
-                    posts[key] = mdFiles;
+                    posts[key] = [mdFile];
                 }
             }
         }
@@ -170,7 +165,7 @@ public sealed record Post
                 }
             }
         }
-        HeadText = headTextEmiiter.Length > 60 ? $"{headTextEmiiter.ToString().Substring(0, 60)}..." : headTextEmiiter.ToString();
+        HeadText = headTextEmiiter.Length > 100 ? $"{headTextEmiiter.ToString().Substring(0, 100)}..." : headTextEmiiter.ToString();
     }
 }
 
