@@ -28,17 +28,4 @@ public partial class MainLayout
         return Task.CompletedTask;
     }
 
-    public IEnumerable<(string Title, string Date, string Url)> GetLatestPosts(int count)
-    {
-        var recentPosts = new List<(string Title, string Date, string Url)>();
-        foreach (var posts in PostProvider.AllPost)
-        {
-            foreach (var post in posts)
-            {
-                recentPosts.Add((post.Title ?? "", post.Date ?? "", post.Url ?? ""));
-            }
-        }
-        return recentPosts.OrderByDescending(p => p.Date).Take(3);
-    }
-
 }

@@ -31,7 +31,7 @@
                     <div class="recent-posts-section">
                         <h3>最新記事</h3>
                         <div class="recent-posts">
-							@foreach (var post in GetLatestPosts(3))
+							@foreach (var post in PostProvider.LatestPosts.AsSpan())
                             {
                                 <div class="recent-post-item">
                                     <a href="@post.Url" class="recent-post-title">@post.Title</a>
