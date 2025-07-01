@@ -372,6 +372,15 @@ code[class*="language-"] {
     margin-bottom: 8px;
     color: #333;
     letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-icon {
+    width: 48px;
+    height: 48px;
+    vertical-align: middle;
 }
 
 .profile-info p {
