@@ -34,3 +34,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: publish/wwwroot
           force_orphan: true
+          cname: prozolic.blog
