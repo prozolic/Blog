@@ -48,7 +48,6 @@ public partial class MainLayout
         var currentUrl = NavigationManager?.ToBaseRelativePath(NavigationManager.Uri);
         if (!string.IsNullOrEmpty(currentUrl) && !currentUrl.Equals("/"))
         {
-            currentUrl = "/" + currentUrl;
             FindPreviousAndNextPostsCore(currentUrl);
         }
         else
