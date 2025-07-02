@@ -53,7 +53,7 @@ public partial class Generator : IIncrementalGenerator
             {
                 var title = post.Header.Title?.Replace("\"", "\\\"").Replace("\r", "").Replace("\n", " ");
                 var headText = post.HeadText?.Replace("\"", "\\\"").Replace("\r", "").Replace("\n", " ");
-                var postItem = $"        new Post() {{ Url = \"{post.Header.Url}\", Date = \"{post.FileName}\", Title = \"{title}\", HeadText = \"{headText}\" }},";
+                var postItem = $"        new Post() {{ Url = \"{post.Header.RefUrl}\", Date = \"{post.FileName}\", Title = \"{title}\", HeadText = \"{headText}\" }},";
                 postListEmitter.AppendLine(postItem);
                 allPostsEmitter.AppendLine(postItem);
             }
@@ -82,7 +82,7 @@ public partial class Generator : IIncrementalGenerator
                 {
                     var title = post.Header.Title?.Replace("\"", "\\\"").Replace("\r", "").Replace("\n", " ");
                     var headText = post.HeadText?.Replace("\"", "\\\"").Replace("\r", "").Replace("\n", " ");
-                    lastedPostEmitter.AppendLine($"        new Post() {{ Url = \"{post.Header.Url}\", Date = \"{post.FileName}\", Title = \"{title}\", HeadText = \"{headText}\" }},");
+                    lastedPostEmitter.AppendLine($"        new Post() {{ Url = \"{post.Header.RefUrl}\", Date = \"{post.FileName}\", Title = \"{title}\", HeadText = \"{headText}\" }},");
                 }
             }
         }
@@ -183,4 +183,16 @@ public partial record Header
 
     public string? Namespace { get; init; }
 
+    [YamlIgnore]
+    public string? RefUrl
+    {
+        get
+        {
+            if (Url?.IndexOf("/") >= 0)
+            {
+                return Url.Substring(1, Url.Length - 1);
+            }
+            return Url;
+        }
+    }
 }
