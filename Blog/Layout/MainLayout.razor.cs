@@ -24,8 +24,6 @@ public partial class MainLayout
 
     protected override Task OnInitializedAsync()
     {
-        OnInitialized();
-
         var section = Configuration?.GetSection("Profile");
         Name = section?["Name"];
         Description = section?["Description"];
@@ -34,7 +32,7 @@ public partial class MainLayout
 
         FindPreviousAndNextPosts();
 
-        return Task.CompletedTask;
+        return base.OnInitializedAsync();
     }
 
     protected override Task OnParametersSetAsync()
