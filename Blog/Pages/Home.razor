@@ -4,26 +4,23 @@
 
 <div class="blog-posts">
 
-	@foreach (var posts in PostProvider.AllPosts.AsSpan())
+	@foreach (var post in PostProvider.AllPosts.AsSpan())
 	{
-		foreach(var post in posts.AsSpan())
-		{
-			<article class="post">
-				<header>
-					<h2 class="post-title">
-						<a href="@post.Url">@post.Title</a>
-					</h2>
-					<div class="post-meta">
-						<time>@post.Date</time>
-					</div>
-				</header>
-				<div class="post-excerpt">
-					@post.HeadText
+		<article class="post">
+			<header>
+				<h2 class="post-title">
+					<a href="@post.Url">@post.Title</a>
+				</h2>
+				<div class="post-meta">
+					<time>@post.Date</time>
 				</div>
-				<div class="post-actions">
-					<a href="@post.Url" class="read-more">続きを読む</a>
-				</div>
-			</article>
-		}
+			</header>
+			<div class="post-excerpt">
+				@post.HeadText
+			</div>
+			<div class="post-actions">
+				<a href="@post.Url" class="read-more">続きを読む</a>
+			</div>
+		</article>
 	}
 </div>

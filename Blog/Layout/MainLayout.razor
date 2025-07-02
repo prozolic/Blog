@@ -14,6 +14,27 @@
             <div class="content-wrapper">
                 <div class="main-content">
                     @Body
+                    
+                    <div class="post-navigation">
+                        <div class="nav-link nav-prev">
+                            @if (PreviousPost != null)
+                            {
+								<a href="@PreviousPost.Value.Url" class="nav-button">
+                                    <span class="nav-direction">← 前の記事</span>
+									<span class="nav-title">@PreviousPost.Value.Title</span>
+                                </a>
+                            }
+                        </div>
+                        <div class="nav-link nav-next">
+                            @if (NextPost != null)
+                            {
+                                <a href="@NextPost.Value.Url" class="nav-button">
+                                    <span class="nav-direction">次の記事 →</span>
+									<span class="nav-title">@NextPost.Value.Title</span>
+                                </a>
+                            }
+                        </div>
+                    </div>
                 </div>
                 <aside class="sidebar">
                     <div class="profile-section">

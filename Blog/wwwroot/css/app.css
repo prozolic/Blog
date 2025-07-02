@@ -446,6 +446,74 @@ code[class*="language-"] {
     font-weight: 400;
 }
 
+/* Post Navigation */
+.post-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 20px;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid #e9ecef;
+}
+
+.nav-link {
+    flex: 1;
+    max-width: 48%;
+}
+
+.nav-prev {
+    text-align: left;
+}
+
+.nav-next {
+    text-align: right;
+}
+
+.nav-button {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #333;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    height: 100%;
+    min-height: 80px;
+}
+
+.nav-button:hover {
+    background-color: #f8f9fa;
+    border-color: #0066ff;
+    color: #333;
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.nav-direction {
+    font-size: 12px;
+    font-weight: 500;
+    color: #0066ff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.nav-title {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: #333;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    white-space: normal;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .content-wrapper {
@@ -478,5 +546,24 @@ code[class*="language-"] {
         width: 60px;
         height: 60px;
         font-size: 24px;
+    }
+    
+    .post-navigation {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .nav-link {
+        max-width: 100%;
+    }
+    
+    .nav-prev,
+    .nav-next {
+        text-align: center;
+    }
+    
+    .nav-button {
+        min-height: 70px;
+        padding: 15px;
     }
 }
