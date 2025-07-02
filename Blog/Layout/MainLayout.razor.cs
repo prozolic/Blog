@@ -51,6 +51,11 @@ public partial class MainLayout
             currentUrl = "/" + currentUrl;
             FindPreviousAndNextPostsCore(currentUrl);
         }
+        else
+        {
+            NextPost = null;
+            PreviousPost = null;
+        }
     }
 
     private void FindPreviousAndNextPostsCore(string currentUrl)
