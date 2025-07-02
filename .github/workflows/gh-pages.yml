@@ -25,7 +25,7 @@ jobs:
 
       # Publish the site
       - name: Publish
-        run: dotnet publish Blog.slnx -c:Release -o:publish -p:GHPages=true
+        run: dotnet publish Blog.slnx -c:Release -o:publish -p:GHPages=true -p:BaseHref=/
 
       # Deploy the site
       - name: Deploy
