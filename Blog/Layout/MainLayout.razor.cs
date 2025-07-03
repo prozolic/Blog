@@ -18,6 +18,8 @@ public partial class MainLayout
 
     public string? BlogSourceUrl { get; private set; }
 
+    public Post? CurrentPost { get; private set; }
+
     public Post? PreviousPost { get; private set; }
 
     public Post? NextPost { get; private set; }
@@ -50,6 +52,7 @@ public partial class MainLayout
         }
         else
         {
+            CurrentPost = null;
             NextPost = null;
             PreviousPost = null;
         }
@@ -67,6 +70,7 @@ public partial class MainLayout
             currentPostIndex++;
         }
 
+        CurrentPost = PostProvider.AllPosts.Length > 0 ? PostProvider.AllPosts[currentPostIndex] : null;
         NextPost = currentPostIndex > 0 ? PostProvider.AllPosts[currentPostIndex - 1] : null;
         PreviousPost = currentPostIndex < PostProvider.AllPosts.Length - 1 ? PostProvider.AllPosts[currentPostIndex + 1] : null;
     }

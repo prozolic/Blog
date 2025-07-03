@@ -10,11 +10,27 @@
     </header>
 
     <main class="main">
-        <div class="container">
+		@if(CurrentPost != null)
+		{
+			<header class="article-header">
+				<div class="article-title">
+					@CurrentPost.Value.Title
+				</div>
+			</header>
+		}
+		<div class="container">
             <div class="content-wrapper">
                 <div class="main-content">
-                    @Body
-                    
+					@if(CurrentPost != null)
+					{
+						<div class="article-content">
+							@Body
+						</div>
+					}
+					else
+					{
+						@Body
+					}
                     <div class="post-navigation">
                         <div class="nav-link nav-prev">
                             @if (PreviousPost != null)
