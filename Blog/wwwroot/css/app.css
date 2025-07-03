@@ -532,9 +532,9 @@ code[class*="language-"] {
     }
     
     .profile-section h3 {
-        font-size: 10px;
-        margin-bottom: 6px;
-        padding-bottom: 3px;
+        font-size: 14px;
+        margin-bottom: 8px;
+        padding-bottom: 4px;
     }
     
     .profile-content {
@@ -550,14 +550,14 @@ code[class*="language-"] {
     }
     
     .profile-info h4 {
-        font-size: 12px;
-        margin-bottom: 3px;
+        font-size: 16px;
+        margin-bottom: 6px;
     }
     
     .profile-info p {
-        font-size: 8px;
-        margin-bottom: 4px;
-        line-height: 1.2;
+        font-size: 12px;
+        margin-bottom: 8px;
+        line-height: 1.4;
     }
     
     .recent-posts-section {
@@ -565,22 +565,22 @@ code[class*="language-"] {
     }
     
     .recent-posts-section h3 {
-        font-size: 10px;
-        margin-bottom: 6px;
-        padding-bottom: 3px;
+        font-size: 14px;
+        margin-bottom: 8px;
+        padding-bottom: 4px;
     }
     
     .recent-post-item {
-        padding: 8px 0;
+        padding: 10px 0;
     }
     
     .recent-post-title {
-        font-size: 8px;
-        line-height: 1.1;
+        font-size: 12px;
+        line-height: 1.3;
     }
     
     .recent-post-date {
-        font-size: 7px;
+        font-size: 10px;
     }
     
     .post {
@@ -590,22 +590,22 @@ code[class*="language-"] {
     }
     
     .post-title {
-        font-size: 14px;
-        margin-bottom: 3px;
+        font-size: 18px;
+        margin-bottom: 8px;
     }
     
     .post-excerpt {
-        font-size: 12px;
-        line-height: 1.2;
-        margin-bottom: 6px;
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 12px;
     }
     
     .post-meta time {
-        font-size: 8px;
+        font-size: 12px;
     }
     
     .read-more {
-        font-size: 8px;
+        font-size: 13px;
     }
     
     .post-navigation {
@@ -634,6 +634,60 @@ code[class*="language-"] {
     }
     
     .footer p {
+        font-size: 12px;
+    }
+}
+
+/* Additional mobile breakpoints */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .logo {
+        font-size: 12px;
+    }
+    
+    .article-title {
+        font-size: 14px;
+        padding: 0 20px;
+    }
+    
+    .article-content {
+        padding: 12px;
+    }
+    
+    .profile-icon {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .profile-info h4 {
+        font-size: 14px;
+    }
+    
+    .profile-info p {
+        font-size: 10px;
+    }
+    
+    .recent-post-title {
+        font-size: 11px;
+    }
+    
+    .recent-post-date {
+        font-size: 9px;
+    }
+    
+    .nav-button {
+        padding: 12px;
+        min-height: 60px;
+    }
+    
+    .nav-direction {
+        font-size: 10px;
+    }
+    
+    .nav-title {
         font-size: 12px;
     }
 }
