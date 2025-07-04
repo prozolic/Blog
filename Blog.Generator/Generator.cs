@@ -158,7 +158,7 @@ public sealed record Post
 
         Header = YamlSerializer.Deserialize<Header>(Encoding.UTF8.GetBytes(yaml));
 
-        // Extract the first 60 characters of the text content from the markdown document.
+        // Extract the first 100 characters of the text content from the markdown document.
         var headTextEmiiter = new StringBuilder();
         foreach (var block in document)
         {
