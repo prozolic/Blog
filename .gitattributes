@@ -1,7 +1,7 @@
 # exclude css
 *.css linguist-vendored
 Blog/wwwroot/lib/* linguist-vendored
-Blog/wwwroot/css/bootstrap* linguist-vendored
+Blog/wwwroot/css/* linguist-vendored
 
 # exclude javascript
 Blog/wwwroot/js/lib/* linguist-vendored
