@@ -1,0 +1,22 @@
+# exclude css
+*.css linguist-vendored
+Blog/wwwroot/lib/* linguist-vendored
+Blog/wwwroot/css/bootstrap* linguist-vendored
+
+# exclude javascript
+Blog/wwwroot/js/lib/* linguist-vendored
+
+# exclude html
+Blog/wwwroot/* linguist-vendored
+*.html linguist-vendored
+
+*.cs linguist-detectable=true
+*.csproj linguist-detectable=true
+*.razor linguist-detectable=true
+
+*.cs linguist-language=C#
+*.razor linguist-language=C#
+
+# document
+README.md linguist-documentation
+LICENSE linguist-documentation
