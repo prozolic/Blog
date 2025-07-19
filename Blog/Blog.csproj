@@ -44,6 +44,13 @@
     <Content Update="wwwroot\icon-512.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="wwwroot\post_images\20250719_TomlDocument.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\post_images\" />
   </ItemGroup>
 
 </Project>
