@@ -16,12 +16,15 @@
 				<div class="article-title">
 					@CurrentPost.Value.Title
 				</div>
+				<div class="article-date">
+					<time>@CurrentPost.Value.Date</time>
+				</div>
 			</header>
 		}
 		<div class="container">
             <div class="content-wrapper">
                 <div class="main-content">
-					@if(CurrentPost != null)
+					@if(CurrentPost.HasValue)
 					{
 						<div class="article-content">
 							@Body
