@@ -266,6 +266,16 @@ code[class*="language-"] {
 }
 
 
+/* Image styling for responsive design */
+.main-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1.5em auto;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
 /* Markdown content styling */
 .main-content h1,
 .main-content h2,
@@ -497,6 +507,12 @@ code[class*="language-"] {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .main-content img {
+        margin: 1em auto;
+        border-radius: 4px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+    
     .content-wrapper {
         grid-template-columns: 1fr;
         gap: 15px;
@@ -651,6 +667,12 @@ code[class*="language-"] {
 
 /* Additional mobile breakpoints */
 @media (max-width: 480px) {
+    .main-content img {
+        margin: 0.8em auto;
+        border-radius: 3px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    
     .container {
         padding: 0 10px;
     }
