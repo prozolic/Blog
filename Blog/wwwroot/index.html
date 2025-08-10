@@ -39,15 +39,36 @@
     <meta name="twitter:image" content="https://prozolic.blog/icon-512.png" />
     <meta name="twitter:image:alt" content="prozolicの技術ブログ" />
 
+    <!-- JSON-LD structured data for Google -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        "name": "prozolicの技術ブログかもしれない",
+        "description": "Blazor WebAssemblyで作成された技術ブログ。Markdownで記事を作成してGitHub Pagesにデプロイしています。",
+        "url": "https://prozolic.blog/",
+        "author": {
+            "@type": "Person",
+            "name": "prozolic"
+        },
+        "inLanguage": "ja-JP",
+        "image": "https://prozolic.blog/icon-512.png"
+    }
+    </script>
+
+    <!-- Favicon variations for better browser support -->
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="icon-512.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="icon-512.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-512.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png" />
     <link rel="stylesheet" href="css/app.css" />
     <!-- Prism.js CSS for syntax highlighting -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
     <link href="Blog.styles.css" rel="stylesheet" />
     <link href="manifest.webmanifest" rel="manifest" />
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
-    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
 </head>
 
 <body>
