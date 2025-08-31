@@ -1,4 +1,4 @@
-// Caution! Be sure you understand the caveats before publishing an application with
+﻿// Caution! Be sure you understand the caveats before publishing an application with
 // offline support. See https://aka.ms/blazor-offline-considerations
 
 self.importScripts('./service-worker-assets.js');
@@ -44,7 +44,7 @@ async function onFetch(event) {
         // unless that request is for an offline resource.
         // If you need some URLs to be server-rendered, edit the following check to exclude those URLs
         const shouldServeIndexHtml = event.request.mode === 'navigate'
-            && !manifestUrlList.some(url => url === event.request.url);
+            && !manifestUrlList.some(url => url === event.request.url || url === `${event.request.url}.br`);
 
         const request = shouldServeIndexHtml ? 'index.html' : event.request;
         const cache = await caches.open(cacheName);
