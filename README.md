@@ -12,9 +12,9 @@ List of NuGet packages used in this project.
 
 | Library | Version | License |  
 |---|---|---|  
-| CsToml.Extensions.Configuration | 1.6.6 | MIT |  
+| CsToml.Extensions.Configuration | 1.7.3 | MIT |  
 | MD2RazorGenerator | 1.2.2 | MPL-2.0 |  
-| PublishSPAforGitHubPages.Build | 3.0.0 | MPL-2.0 |  
+| PublishSPAforGitHubPages.Build | 3.0.3 | MPL-2.0 |  
 
 ### Source Generator (Blog.Generator.csproj)
 
