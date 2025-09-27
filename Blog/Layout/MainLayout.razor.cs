@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace Blog.Layout;
 
@@ -23,6 +24,8 @@ public partial class MainLayout
     public Post? PreviousPost { get; private set; }
 
     public Post? NextPost { get; private set; }
+
+    public string SearchKeyword { get; set; } = string.Empty;
 
     protected override Task OnInitializedAsync()
     {
@@ -70,9 +73,33 @@ public partial class MainLayout
             currentPostIndex++;
         }
 
-        CurrentPost = PostProvider.AllPosts.Length > 0 ? PostProvider.AllPosts[currentPostIndex] : null;
-        NextPost = currentPostIndex > 0 ? PostProvider.AllPosts[currentPostIndex - 1] : null;
-        PreviousPost = currentPostIndex < PostProvider.AllPosts.Length - 1 ? PostProvider.AllPosts[currentPostIndex + 1] : null;
+        var result = currentPostIndex < PostProvider.AllPosts.Length;
+
+        CurrentPost = result && PostProvider.AllPosts.Length > 0 ? PostProvider.AllPosts[currentPostIndex] : null;
+        NextPost = result && currentPostIndex > 0 ? PostProvider.AllPosts[currentPostIndex - 1] : null;
+        PreviousPost = result && currentPostIndex < PostProvider.AllPosts.Length - 1 ? PostProvider.AllPosts[currentPostIndex + 1] : null;
+    }
+
+    private void OnSearchKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            OnSearch();
+        }
+    }
+
+    private void OnSearch()
+    {
+        if (!string.IsNullOrWhiteSpace(SearchKeyword))
+        {
+            var parameter = new Dictionary<string, object?>
+            {
+                { "q", Uri.EscapeDataString(SearchKeyword) }
+            };
+
+            var url = NavigationManager?.GetUriWithQueryParameters("search", parameter.AsReadOnly()) ?? "/";
+            NavigationManager?.NavigateTo(url!);
+        }
     }
 
 }

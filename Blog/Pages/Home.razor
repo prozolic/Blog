@@ -1,10 +1,13 @@
 ﻿@page "/"
+@page "/category/{categoryname}"
+@page "/search/"
 
 <PageTitle>prozolicの技術ブログかもしれない</PageTitle>
 
 <div class="blog-posts">
+	<h2>@SearchResultText</h2>
 
-	@foreach (var post in PostProvider.AllPosts.AsSpan())
+	@foreach (var post in Posts)
 	{
 		<article class="post">
 			<header>

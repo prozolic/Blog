@@ -29,11 +29,13 @@ public partial class Generator : IIncrementalGenerator
         const int MarkdownFileNameLength = 10;
 
         var posts = new Dictionary<string, List<Post>>();
+        var postCount = 0;
         foreach(var mdFile in source.Where(m => m.FileName.Length == MarkdownFileNameLength && DateTime.TryParse(m.FileName, out var _)))
         {
             var key = mdFile.FileName.AsSpan().Slice(0, 4).ToString();
             if (posts.TryGetValue(key, out var result))
             {
+                postCount++;
                 result.Add(mdFile);
             }
             else
@@ -42,24 +44,32 @@ public partial class Generator : IIncrementalGenerator
             }
         }
 
+        // Sort so that index 0 is the latest post and store in AllPosts.
         var allPostsEmitter = new StringBuilder();
         allPostsEmitter.AppendLine("    public static readonly ImmutableArray<Post> AllPosts = [");
-
-        var postListEmitter = new StringBuilder();
         foreach (var p in posts.OrderByDescending(p => p.Key))
         {
-            postListEmitter.AppendLine($"    public static readonly ImmutableArray<Post> _{p.Key} = [");
             foreach (var post in p.Value.Where(m => m.SourceText != null).OrderByDescending(m => m.FileName))
             {
                 var title = post.Header.Title?.Replace("\"", "\\\"").Replace("\r", "").Replace("\n", " ");
                 var headText = post.HeadText?.Replace("\"", "\\\"").Replace("\r", "").Replace("\n", " ");
-                var postItem = $"        new Post() {{ Url = \"{post.Header.RefUrl}\", Date = \"{post.FileName}\", Title = \"{title}\", HeadText = \"{headText}\" }},";
-                postListEmitter.AppendLine(postItem);
+                var postItem = $"        new Post() {{ Url = \"{post.Header.RefUrl}\", Date = \"{post.FileName}\", Title = \"{title}\", HeadText = \"{headText}\", Categories = {post.Header.FormatCategoriesInArrayType()} }},";
                 allPostsEmitter.AppendLine(postItem);
+            }
+        }
+        allPostsEmitter.Append("    ];");
+
+        var postListEmitter = new StringBuilder();
+        var index = 0;
+        foreach (var p in posts.OrderByDescending(p => p.Key))
+        {
+            postListEmitter.AppendLine($"    public static readonly ImmutableArray<Post> _{p.Key} = [");
+            foreach (var post in p.Value.Where(m => m.SourceText != null))
+            {
+                postListEmitter.AppendLine($"        AllPosts[{index++}],");
             }
             postListEmitter.Append("    ];");
         }
-        allPostsEmitter.Append("    ];");
 
         var allPostsByMonthEmitter = new StringBuilder();
         allPostsByMonthEmitter.AppendLine("    public static readonly ImmutableArray<ImmutableArray<Post>> AllPostsByMonth = [");
@@ -69,27 +79,29 @@ public partial class Generator : IIncrementalGenerator
         }
         allPostsByMonthEmitter.Append("    ];");
 
-        var lastedPostEmitter = new StringBuilder();
-        lastedPostEmitter.AppendLine("    public static readonly ImmutableArray<Post> LatestPosts = [");
-
-        var count = 0;
         // Get the latest 3 years
-        foreach (var p in posts.OrderByDescending(p => p.Key))
+        var lastedPostEmitter = new StringBuilder();
+        switch (postCount)
         {
-            foreach (var post in p.Value.Where(m => m.SourceText != null).OrderByDescending(m => m.FileName))
-            {
-                if (count++ < 3)
-                {
-                    var title = post.Header.Title?.Replace("\"", "\\\"").Replace("\r", "").Replace("\n", " ");
-                    var headText = post.HeadText?.Replace("\"", "\\\"").Replace("\r", "").Replace("\n", " ");
-                    lastedPostEmitter.AppendLine($"        new Post() {{ Url = \"{post.Header.RefUrl}\", Date = \"{post.FileName}\", Title = \"{title}\", HeadText = \"{headText}\" }},");
-                }
-            }
+            case 0:
+                lastedPostEmitter.AppendLine($"    public static readonly ImmutableArray<Post> LatestPosts = ImmutableArray<Post>.Empty;");
+                break;
+            case 1:
+                lastedPostEmitter.AppendLine($"    public static readonly ImmutableArray<Post> LatestPosts = [AllPosts[0] ];");
+                break;
+            case 2:
+                lastedPostEmitter.AppendLine($"    public static readonly ImmutableArray<Post> LatestPosts = [AllPosts[0], AllPosts[1] ];");
+                break;
+            case 3:
+                lastedPostEmitter.AppendLine($"    public static readonly ImmutableArray<Post> LatestPosts = [AllPosts[0], AllPosts[1], AllPosts[2] ];");
+                break;
+            default:
+                lastedPostEmitter.AppendLine($"    public static readonly ImmutableArray<Post> LatestPosts = [AllPosts[0], AllPosts[1], AllPosts[2] ];");
+                break;
         }
-        lastedPostEmitter.Append("    ];");
 
         var code = $$"""
-// <auto-generated> This .cs file is generated by CsToml.Generator. </auto-generated>
+// <auto-generated> This .cs file is generated by Blog.Generator. </auto-generated>
 #nullable enable
 #pragma warning disable CS0219 // The variable 'variable' is assigned but its value is never used
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
@@ -106,8 +118,8 @@ namespace Blog;
 
 public static class PostProvider
 {
-{{postListEmitter}}
 {{allPostsEmitter}}
+{{postListEmitter}}
 {{allPostsByMonthEmitter}}
 {{lastedPostEmitter}}
 }
@@ -122,6 +134,8 @@ public record struct Post
     public required string? Title { get; init; }
 
     public required string? HeadText { get; init; }
+
+    public required ImmutableArray<string> Categories { get; init; }
 }
 """;
 
@@ -183,6 +197,8 @@ public partial record Header
 
     public string? Namespace { get; init; }
 
+    public string? Categories { get; init; }
+
     [YamlIgnore]
     public string? RefUrl
     {
@@ -194,5 +210,14 @@ public partial record Header
             }
             return Url;
         }
+    }
+
+    public string? FormatCategoriesInArrayType()
+    {
+        if (string.IsNullOrEmpty(Categories))
+        {
+            return "ImmutableArray<string>.Empty";
+        }
+        return $"[{string.Join(",", Categories!.Split(',').Select(c => $"\"{c.Trim()}\""))} ]";
     }
 }

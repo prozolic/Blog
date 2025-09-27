@@ -2,10 +2,14 @@
 
 <div class="page">
     <header class="header">
-        <div class="container">
+        <div class="container header-container">
             <h1 class="logo">
 				<a href="">prozolicの技術ブログかもしれない</a>
             </h1>
+            <div class="search-container">
+				<input type="text" class="search-input" placeholder="検索..." @bind="SearchKeyword" @bind:event="oninput" @onkeydown="OnSearchKeyDown" />
+                <button class="search-button" @onclick="OnSearch">🔍</button>
+            </div>
         </div>
     </header>
 
@@ -27,6 +31,12 @@
 					@if(CurrentPost.HasValue)
 					{
 						<div class="article-content">
+							<div class="view-category">
+								@foreach (var category in CurrentPost.Value.Categories)
+								{
+									<a href="/category/@category" class="view-category-item">@category</a>
+								}
+							</div>
 							@Body
 						</div>
 					}
