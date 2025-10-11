@@ -1,5 +1,6 @@
 ﻿using Markdig;
 using Markdig.Extensions.Yaml;
+using Markdig.Helpers;
 using Markdig.Syntax;
 using Markdig.Syntax.Inlines;
 using Microsoft.CodeAnalysis;
@@ -52,8 +53,8 @@ public partial class Generator : IIncrementalGenerator
             foreach (var post in p.Value.Where(m => m.SourceText != null).OrderByDescending(m => m.FileName))
             {
                 var title = post.Header.Title?.Replace("\"", "\\\"").Replace("\r", "").Replace("\n", " ");
-                var headText = post.HeadText?.Replace("\"", "\\\"").Replace("\r", "").Replace("\n", " ");
-                var postItem = $"        new Post() {{ Url = \"{post.Header.RefUrl}\", Date = \"{post.FileName}\", Title = \"{title}\", HeadText = \"{headText}\", Categories = {post.Header.FormatCategoriesInArrayType()} }},";
+                var text = post.Text?.Replace("\"", "\\\"").Replace("\r", "").Replace("\n", " ");
+                var postItem = $"        new Post() {{ Url = \"{post.Header.RefUrl}\", Date = \"{post.FileName}\", Title = \"{title}\", Text = \"{text}\", Categories = {post.Header.FormatCategoriesInArrayType()} }},";
                 allPostsEmitter.AppendLine(postItem);
             }
         }
@@ -133,7 +134,9 @@ public record struct Post
 
     public required string? Title { get; init; }
 
-    public required string? HeadText { get; init; }
+    public string? HeadText => Text.Length > 100 ? $"{Text.Substring(0, 100)}..." : Text;
+
+    public required string? Text { get; init; } 
 
     public required ImmutableArray<string> Categories { get; init; }
 }
@@ -158,7 +161,7 @@ public sealed record Post
 
     public Header Header { get; init; }
 
-    public string HeadText { get; init; }
+    public string Text { get; init; }
 
     public Post(string path, SourceText? sourceText)
     {
@@ -172,19 +175,40 @@ public sealed record Post
 
         Header = YamlSerializer.Deserialize<Header>(Encoding.UTF8.GetBytes(yaml));
 
-        // Extract the first 100 characters of the text content from the markdown document.
         var headTextEmiiter = new StringBuilder();
         foreach (var block in document)
         {
             if (block is ParagraphBlock paragraphBlock && paragraphBlock.Inline != null)
             {
-                foreach(var inline in paragraphBlock.Inline.Where(i => i is LiteralInline))
+                foreach(var inline in paragraphBlock.Inline)
                 {
-                    headTextEmiiter.Append(inline.ToString());
+                    if (inline is LiteralInline)
+                    {
+                        headTextEmiiter.Append(inline.ToString());
+                    }
+                    else if (inline is LinkInline linkInline)
+                    {
+                        foreach(var c in linkInline)
+                        {
+                            headTextEmiiter.Append(c.ToString());
+                        }
+                    }
+                    else if (inline is EmphasisInline emphasisInline)
+                    {
+                        foreach (var c in emphasisInline)
+                        {
+                            headTextEmiiter.Append(c.ToString());
+                        }
+                    }
+                    else if (inline is CodeInline codeInline)
+                    {
+                        headTextEmiiter.Append(codeInline.Content);
+                    }
                 }
             }
         }
-        HeadText = headTextEmiiter.Length > 100 ? $"{headTextEmiiter.ToString().Substring(0, 100)}..." : headTextEmiiter.ToString();
+
+        Text = headTextEmiiter.ToString();
     }
 }
 

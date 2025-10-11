@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
+using System;
+using System.Buffers;
 using System.Collections.Immutable;
 
 namespace Blog.Pages;
@@ -47,7 +49,7 @@ public partial class Home
         else if (!string.IsNullOrEmpty(RawQuery))
         {
             UnescapeQuery = Uri.UnescapeDataString(RawQuery);
-            Posts = PostProvider.AllPosts.Where(p => p.Title!.Contains(UnescapeQuery) || p.HeadText!.Contains(UnescapeQuery)).ToImmutableArray();
+            Posts = PostProvider.AllPosts.Where(p => p.Title!.Contains(UnescapeQuery) || p.Text!.Contains(UnescapeQuery)).ToImmutableArray();
             currentDisplayMode = DisplayMode.Search;
         }
         else
