@@ -11,13 +11,21 @@
 	{
 		<article class="post">
 			<header>
-				<h2 class="post-title">
-					<a href="@post.Url">@post.Title</a>
-				</h2>
 				<div class="post-meta">
 					<time>@post.Date</time>
 				</div>
+				<h2 class="post-title">
+					<a href="@post.Url">@post.Title</a>
+				</h2>
 			</header>
+			<div class="view-category-area">
+				<div class="view-category">
+					@foreach (var category in post.Categories)
+					{
+						<a href="/category/@category" class="view-category-item">@category</a>
+					}
+				</div>
+			</div>
 			<div class="post-excerpt">
 				@post.HeadText
 			</div>

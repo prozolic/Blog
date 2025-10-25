@@ -35,7 +35,7 @@
 
 /* Post title styling */
 .post-title {
-    font-size: 24px;
+    font-size: 1.7em;
     font-weight: 600;
     margin-top: 0;
     margin-bottom: 0.5em;
@@ -116,9 +116,9 @@
         margin-bottom: 16px;
         border-radius: 6px;
     }
-    
+
     .post-title {
-        font-size: 18px;
+        font-size: 1.7em;
         margin-bottom: 0.4em;
     }
     
@@ -143,9 +143,9 @@
         padding: 12px;
         margin-bottom: 12px;
     }
-    
+
     .post-title {
-        font-size: 16px;
+        font-size: 1.7em;
     }
     
     .post-meta {

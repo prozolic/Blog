@@ -43,6 +43,10 @@ body {
     padding: 0 10px;
 }
 
+.view-category-area {
+    margin-top: 1.2rem;
+}
+
 .view-category {
     display: flex;
     flex-wrap: wrap;
@@ -195,7 +199,6 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     margin-bottom: 0.3em;
-    padding: 0 34px;
     font-size: 1.7em;
     font-weight: 600;
     color: #333;
@@ -206,7 +209,7 @@ body {
 .article-date {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 34px;
+    margin-bottom: 0.8em;
     font-size: 1.0em;
     font-weight: 600;
     color: #666;
@@ -723,10 +726,9 @@ code[class*="language-"] {
     .article-header {
         padding: 16px 0;
     }
-    
+
     .article-title {
-        font-size: 16px;
-        padding: 0 26px;
+        font-size: 1.7em;
     }
     
     .article-content {
@@ -887,10 +889,9 @@ code[class*="language-"] {
         height: 32px;
         font-size: 12px;
     }
-    
+
     .article-title {
-        font-size: 1.5em;
-        padding: 0 20px;
+        font-size: 1.7em;
     }
     
     .article-content {
